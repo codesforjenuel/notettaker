@@ -18,7 +18,8 @@ res.json(notes)
 });
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
-  const notes = JSON.parse(fs.readFileSync("./db/db.json"))
+  const notes = JSON.parse(fs.readFileSync("./db/db.json"));
+newNote.id = notes.length + 1;
   console.log(newNote)
  notes.push(newNote)
  //use fs to write to the dbjson file notes after pushing
