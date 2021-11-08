@@ -3,7 +3,6 @@ const path = require("path");
 const db = require("./db/db.json")
 const fs = require('fs')
 const app = express();
-const { v4: uuidv4 } = require('uuid')
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true}));
@@ -11,11 +10,20 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+app.get('/api/notes', (req, res) => {
+
+  const notes = JSON.parse(fs.readFileSync("./db/db.json"))
+res.json(notes)
+
+});
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
   const notes = JSON.parse(fs.readFileSync("./db/db.json"))
   console.log(newNote)
- 
+ notes.push(newNote)
+ //use fs to write to the dbjson file notes after pushing
+ fs.writeFileSync("./db/db.json", JSON.stringify(notes))
+ res.json(newNote)
 });
 
 
